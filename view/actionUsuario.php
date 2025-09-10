@@ -1,6 +1,7 @@
-<?php include("header.php"); ?>
-
 <?php
+session_start();
+
+include("header.php");
 include("../config/conexaoBD.php");
 
 $erroPreenchimento = false;
@@ -17,7 +18,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bind_param("sss", $nomeUsuario, $emailUsuario, $senhaHash);
 
         if ($stmt->execute()) {
-            echo "<div class='alert alert-success text-center'>Usuário cadastrado com sucesso!</div>";
+            $idUsuario = $stmt->insert_id;
+
+            $_SESSION['idUsuario']  = $idUsuario;
+            $_SESSION['nomeUsuario'] = $nomeUsuario;
+            $_SESSION['emailUsuario'] = $emailUsuario;
+
+            header("Location: ../index.php");
+            exit();
         } else {
             echo "<div class='alert alert-danger text-center'>Erro ao tentar cadastrar usuário!</div>";
         }
@@ -31,6 +39,6 @@ function filtrar_entrada($dado){
     $dado = htmlspecialchars($dado);
     return $dado;
 }
-?>
 
-<?php include("footer.php"); ?>
+include("footer.php");
+?>
