@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['nomeUsuario'] = $usuario['nomeUsuario'];
             $_SESSION['logado'] = true;
 
-            header('Location: inicio.php');
+            header('Location: /TADS6-2025-2-GWS-Carolinne-Antonio-Jaqueline/TADS6-2025-2-GWS-Carolinne-Antonio-Jaqueline/index.php');
             exit();
         } else {
             // Senha incorreta
