@@ -3,7 +3,7 @@
     $servidorBD = "localhost";
     $usuarioBD  = "root";
     $senhaBD    = "";
-    $nomeBD     = "bd_setimaFilosofia";
+    $nomeBD     = "bd_setimafilosofia";
 
     $conn       = mysqli_connect($servidorBD, $usuarioBD, $senhaBD, $nomeBD);
 
