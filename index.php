@@ -2,13 +2,15 @@
 include("config/conexaoBD.php");
 include("view/header.php");
 
+$sql = "SELECT idPost, tituloPost, imagemPost, idUsuario, dataPublicacao
+        FROM posts
+        ORDER BY dataPublicacao DESC
+        LIMIT 6";
+$result = $conn->query($sql);
 
-$sql = "SELECT idPost, tituloPost, imagemPost, autorPost, dataPublicacao
-            FROM posts
-            ORDER BY dataPublicacao DESC
-            LIMIT 6";
-    $result = $conn->query($sql);
-    
+if (!$result) {
+    die("Erro na query: " . $conn->error);
+}
 ?>
 
 <div class="container">
@@ -30,13 +32,13 @@ $sql = "SELECT idPost, tituloPost, imagemPost, autorPost, dataPublicacao
             <?php if ($result->num_rows > 0): ?>
                 <?php while($post = $result->fetch_assoc()): ?>
                     <div class="card">
-                        <img src="uploads/<?php echo $post['imagem'] ?: 'default.jpg'; ?>" alt="<?php echo $post['titulo']; ?>">
+                        <img src="img/<?php echo $post['imagemPost'] ?: 'default.jpg'; ?>" alt="<?php echo $post['tituloPost']; ?>">
                         <div class="card-body">
-                            <h3><?php echo $post['titulo']; ?></h3>
-                            <p><?php echo substr($post['resumo'], 0, 120) . '...'; ?></p>
-                            <small>Por <?php echo $post['autor']; ?> em <?php echo date("d/m/Y", strtotime($post['data_publicacao'])); ?></small>
+                            <h3><?php echo $post['tituloPost']; ?></h3>
+                            <p><?php echo substr($post['idUsuario'], 0, 120) . '...'; ?></p>
+                            <small>Por <?php echo $post['idUsuario']; ?> em <?php echo date("d/m/Y", strtotime($post['dataPublicacao'])); ?></small>
                             <br>
-                            <a href="post.php?id=<?php echo $post['id']; ?>" class="btn">Ler mais</a>
+                            <a href="post.php?id=<?php echo $post['idPost']; ?>" class="btn">Ler mais</a>
                         </div>
                     </div>
                 <?php endwhile; ?>
