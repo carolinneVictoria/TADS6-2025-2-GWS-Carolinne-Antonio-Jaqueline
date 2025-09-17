@@ -80,7 +80,7 @@ $comentarios = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
                 <a href="editarPost.php?id=<?php echo $post['idPost']; ?>" class="btn btn-outline-warning btn-sm">
                     <i class="bi bi-pencil-square"></i> Editar
                 </a>
-                <a href="excluirPost.php?id=<?php echo $post['idPost']; ?>" class="btn btn-outline-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este post?');">
+                <a href="actionExcluirPost.php?id=<?php echo $post['idPost']; ?>" class="btn btn-outline-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este post?');">
                     <i class="bi bi-trash"></i> Excluir
                 </a>
             </div>
