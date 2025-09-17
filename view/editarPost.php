@@ -2,8 +2,6 @@
 include("../config/conexaoBD.php");
 include("../view/header.php");
 
-session_start();
-
 $autor = $_SESSION['nomeUsuario'] ?? "Anônimo";
 $idUsuarioLogado = $_SESSION['idUsuario'] ?? null;
 
