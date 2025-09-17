@@ -1,4 +1,4 @@
-<?php include("header.php"); ?>
+<?php include("../view/header.php"); ?>
 
 <?php
     if(isset($_GET["erroLogin"])){
