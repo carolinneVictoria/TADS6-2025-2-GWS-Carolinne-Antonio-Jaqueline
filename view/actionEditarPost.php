@@ -1,6 +1,5 @@
 <?php
 include("../config/conexaoBD.php");
-session_start();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $idPost   = intval($_POST['idPost']);
