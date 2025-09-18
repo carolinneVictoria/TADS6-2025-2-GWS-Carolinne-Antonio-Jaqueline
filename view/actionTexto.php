@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conteudo = filtrar_entrada($_POST["conteudo"]);
     $data     = date("Y-m-d H:i:s");
     $idUsuario = $_SESSION["idUsuario"];
-
+    $idCategoria = intval($_POST['categoria'] ?? 0);
 
     $imagemPath = null;
     if (isset($_FILES["imagem"]) && $_FILES["imagem"]["error"] === UPLOAD_ERR_OK) {
@@ -33,10 +33,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!empty($titulo) && !empty($conteudo)) {
         $stmt = $conn->prepare(
-            "INSERT INTO posts (tituloPost, descricaoPost, imagemPost, dataPublicacao, idUsuario) 
-             VALUES (?, ?, ?, ?, ?)"
+            "INSERT INTO posts (tituloPost, descricaoPost, imagemPost, dataPublicacao, idUsuario, idCategoria)
+                VALUES (?, ?, ?, ?, ?, ?)"
         );
-        $stmt->bind_param("ssssi", $titulo, $conteudo, $imagemPath, $data, $idUsuario);
+        $stmt->bind_param("ssssii", $titulo, $conteudo, $imagemPath, $data, $idUsuario, $idCategoria);
 
         if ($stmt->execute()) {
             header("Location: /TADS6-2025-2-GWS-Carolinne-Antonio-Jaqueline/TADS6-2025-2-GWS-Carolinne-Antonio-Jaqueline/index.php");
