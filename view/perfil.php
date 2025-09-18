@@ -3,7 +3,6 @@ session_start();
 include("header.php");
 include("../config/conexaoBD.php");
 
-// Verifica se o usuário está logado
 if (!isset($_SESSION['idUsuario'])) {
     header("Location: formLogin.php");
     exit();
@@ -11,14 +10,12 @@ if (!isset($_SESSION['idUsuario'])) {
 
 $idUsuario = $_SESSION['idUsuario'];
 
-// Pega os dados do usuário
 $stmt = $conn->prepare("SELECT nomeUsuario, emailUsuario FROM usuario WHERE idUsuario = ?");
 $stmt->bind_param("i", $idUsuario);
 $stmt->execute();
 $usuario = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
-// Pega os posts do usuário
 $stmt = $conn->prepare("SELECT p.idPost, p.tituloPost, p.imagemPost, p.dataPublicacao, c.descricaoCategoria
                         FROM posts p
                         LEFT JOIN categoria c ON p.idCategoria = c.idCategoria
