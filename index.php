@@ -2,25 +2,16 @@
 include("config/conexaoBD.php");
 include("view/header.php");
 
-$sql = "SELECT p.idPost, p.tituloPost, p.imagemPost, p.idUsuario, p.dataPublicacao, u.nomeUsuario
-        FROM posts p
-        INNER JOIN usuario u
-            ON p.idUsuario = u.idUsuario
-        ORDER BY p.dataPublicacao DESC
-        LIMIT 6;
-        ";
-$result = $conn->query($sql);
-
-if (!$result) {
-    die("Erro na query: " . $conn->error);
-}
+$sqlCat = "SELECT * FROM categoria";
+$resCat = $conn->query($sqlCat);
 ?>
 
-<div class="container">
+<div class="container my-5">
+
     <section class="top">
         <div class="top-left" style="color: white">
             <h1>Seja Bem-Vindo(a) à Sétima Filosofia!</h1>
-            <p>Aqui, a gente desvenda as grandes questões da vida, da arte e da existência, tudo isso por meio das histórias que a tela nos conta. Prepare-se para mergulhar em um mundo onde cada filme é um convite à reflexão e cada cena esconde um universo de ideias.</p>
+            <p>Aqui, a gente desvenda as grandes questões da vida, da arte e da existência, tudo isso por meio das histórias que a tela nos conta.</p>
             <p>Pega a pipoca e vem com a gente nessa jornada. A sua poltrona para o pensamento já está reservada!</p>
         </div>
 
@@ -29,30 +20,46 @@ if (!$result) {
         </div>
     </section>
 
+    <section class="mt-5">
+        <h2 class="text-light mb-3">Categorias</h2>
+        <div class="mb-4">
+            <button class="btn btn-outline-light me-2 filtro-categoria" data-id="0">Todos</button>
+            <?php while($cat = $resCat->fetch_assoc()): ?>
+                <button class="btn btn-outline-light me-2 filtro-categoria" data-id="<?php echo $cat['idCategoria']; ?>">
+                    <?php echo $cat['descricaoCategoria']; ?>
+                </button>
+            <?php endwhile; ?>
+        </div>
+    </section>
+
     <section>
-        <h2 class="h1 mb-4" style="color: white">Blog</h2>
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            <?php if ($result->num_rows > 0): ?>
-                <?php while($post = $result->fetch_assoc()): ?>
-                    <div class="col">
-                        <div class="card h-100 bg-dark border-0 shadow-sm">
-                            <img src="img/<?php echo $post['imagemPost'] ?: 'default.jpg'; ?>" class="card-img-top card-img-post" style="height: 250px" alt="<?php echo $post['tituloPost']; ?>">
-                            <div class="card-body">
-                                <h4 class="card-title text-light"><?php echo $post['tituloPost']; ?></h4>
-                                <p class="card-text text-white-50">Por <?php echo $post['nomeUsuario']; ?></p>
-                                <small class="d-block text-white-50">Publicado em <?php echo date("d/m/Y", strtotime($post['dataPublicacao'])); ?></small>
-                                <a href="/TADS6-2025-2-GWS-Carolinne-Antonio-Jaqueline/TADS6-2025-2-GWS-Carolinne-Antonio-Jaqueline/view/post.php?id=<?php echo $post['idPost']; ?>" class="btn btn-danger mt-3">Ler mais</a>
-                            </div>
-                        </div>
-                    </div>
-                <?php endwhile; ?>
-            <?php else: ?>
-                <div class="col">
-                    <p>Nenhum post publicado ainda.</p>
-                </div>
-            <?php endif; ?>
+        <h2 class="text-light mb-3">Filmes</h2>
+        <div id="lista-posts" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         </div>
     </section>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const botoes = document.querySelectorAll(".filtro-categoria");
+    const listaPosts = document.getElementById("lista-posts");
+
+    function carregarPosts(idCategoria = 0) {
+        fetch("getPosts.php?idCategoria=" + idCategoria)
+            .then(res => res.text())
+            .then(html => listaPosts.innerHTML = html)
+            .catch(err => listaPosts.innerHTML = "<p class='text-danger'>Erro ao carregar posts.</p>");
+    }
+
+    carregarPosts();
+
+    botoes.forEach(btn => {
+        btn.addEventListener("click", function() {
+            const id = this.dataset.id;
+            carregarPosts(id);
+        });
+    });
+});
+</script>
 
 <?php include("view/footer.php"); ?>
