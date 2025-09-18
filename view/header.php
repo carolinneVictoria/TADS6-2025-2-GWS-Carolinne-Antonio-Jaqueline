@@ -35,10 +35,6 @@ if (session_status() === PHP_SESSION_NONE) {
                     <li class="nav-item">
                     <a class="nav-link text-white text-decoration-none" href="/TADS6-2025-2-GWS-Carolinne-Antonio-Jaqueline/TADS6-2025-2-GWS-Carolinne-Antonio-Jaqueline/index.php">Home</a>
                     </li>
-                    <li class="nav-item">
-                    <a class="nav-link text-white text-decoration-none" href="#portfolio">Categorias</a>
-                    </li>
-
                     <?php if (isset($_SESSION['idUsuario'])): ?>
                         <li class="nav-item"><a class="nav-link text-white text-decoration-none" href="/TADS6-2025-2-GWS-Carolinne-Antonio-Jaqueline/TADS6-2025-2-GWS-Carolinne-Antonio-Jaqueline/view/cadastrarTexto.php">Escrever Texto</a></li>
                         <li class="nav-item"><a class="nav-link text-white text-decoration-none" href="/TADS6-2025-2-GWS-Carolinne-Antonio-Jaqueline/TADS6-2025-2-GWS-Carolinne-Antonio-Jaqueline/view/perfil.php">Perfil</a></li>
