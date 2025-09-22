@@ -39,7 +39,8 @@ if ($idUsuarioLogado) {
 }
 
 // Pegar comentários
-$stmt = $conn->prepare("SELECT c.texto, u.nomeUsuario, c.dataComentario 
+// Buscar também idComentario e idUsuario do comentário
+$stmt = $conn->prepare("SELECT c.idComentario, c.idUsuario, c.texto, u.nomeUsuario, c.dataComentario 
                         FROM comentarios c 
                         INNER JOIN usuario u ON c.idUsuario = u.idUsuario
                         WHERE c.idPost = ? 
@@ -107,10 +108,19 @@ $comentarios = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
             <!-- Lista de Comentários -->
             <h5>Comentários</h5>
             <?php foreach ($comentarios as $comentario): ?>
-                <div class="mb-2 p-2 bg-dark bg-opacity-50 rounded">
-                    <strong><?php echo htmlspecialchars($comentario['nomeUsuario']); ?>:</strong>
-                    <span><?php echo htmlspecialchars($comentario['texto']); ?></span>
-                    <br><small class="text-muted"><?php echo date("d/m/Y H:i", strtotime($comentario['dataComentario'])); ?></small>
+                <div class="mb-2 p-2 bg-dark bg-opacity-50 rounded d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong><?php echo htmlspecialchars($comentario['nomeUsuario']); ?>:</strong>
+                        <span><?php echo htmlspecialchars($comentario['texto']); ?></span>
+                        <br><small class="text-muted"><?php echo date("d/m/Y H:i", strtotime($comentario['dataComentario'])); ?></small>
+                    </div>
+                    <?php if ($idUsuarioLogado && $comentario['idUsuario'] == $idUsuarioLogado): ?>
+                        <form action="actionExcluirComentario.php" method="GET" onsubmit="return confirm('Tem certeza que deseja excluir este comentário?');" style="margin:0;">
+                            <input type="hidden" name="idComentario" value="<?php echo $comentario['idComentario']; ?>">
+                            <input type="hidden" name="idPost" value="<?php echo $idPost; ?>">
+                            <button type="submit" class="btn btn-outline-danger btn-sm ms-2" title="Excluir comentário">Excluir</button>
+                        </form>
+                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
 
